@@ -31,4 +31,14 @@ namespace Recrystallization
         NonPeriodical =1
     }
 
+    public enum SimulationStatus
+    {
+        Growthing = 1,
+        EndGrowth = 2,
+        Recrystallizationing = 3,
+        EndRecrystallization = 4,
+        MC = 5,
+        EndMC =6
+    }
+
 }

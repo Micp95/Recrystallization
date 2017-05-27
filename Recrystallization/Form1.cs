@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,8 +33,19 @@ namespace Recrystallization
         private void Render()
         {
             var map = simulation.GetMap();
-            if( map != null)
-                pictureBox1.Image = new Bitmap(map, new Size(pictureBox1.Width, pictureBox1.Height));
+            if (map != null)
+                pictureBox1.Image = ResizeBitmap(map, pictureBox1.Width, pictureBox1.Height);
+            //    pictureBox1.Image = new Bitmap(map, new Size(pictureBox1.Width, pictureBox1.Height));
+        }
+        private Bitmap ResizeBitmap(Bitmap b, int nWidth, int nHeight)
+        {
+            Bitmap result = new Bitmap(nWidth, nHeight);
+            using (Graphics g = Graphics.FromImage((Image)result))
+            {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.DrawImage(b, 0, 0, nWidth, nHeight);
+            }
+            return result;
         }
 
         private void Form1_ResizeEnd(object sender, EventArgs e)
@@ -67,7 +79,7 @@ namespace Recrystallization
         private void button2_Click(object sender, EventArgs e)
         {
             NeighborhoodMethod neighborhoodMethod = (NeighborhoodMethod)selectLib.SelectedIndex;
-            simulation.StartSimulation(neighborhoodMethod);
+            simulation.StartSimulation(neighborhoodMethod,int.Parse(textBoxK.Text));
             timer1.Enabled = true;
         }
 
@@ -78,13 +90,18 @@ namespace Recrystallization
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            simulation.NextStep();
+            var flag =simulation.NextStep();
             Render();
+
+            if (!flag)
+            {
+                timer1.Enabled = false;
+
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            simulation.NextStep();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -102,6 +119,22 @@ namespace Recrystallization
             int pX = (int)(((double)w / (double)wm) * arg.X);
             int pY = (int)(((double)h / (double)hm) * arg.Y);
             simulation.AddSeed(pX, pY);
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            simulation.StartMC(int.Parse(textBoxAmount.Text), int.Parse(textBoxWidth.Text), int.Parse(textBoxHeight.Text));
         }
     }
 }

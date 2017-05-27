@@ -24,6 +24,7 @@ namespace Recrystallization
             map = null;
         }
 
+
         public Bitmap GetMap()
         {
             return map;
@@ -74,6 +75,10 @@ namespace Recrystallization
         public void SetPixesl(int x, int y, Color color)
         {
             mapTemp.SetPixel(x, y, color);
+        }
+        public void SetGeneralPixesl(int x, int y, Color color)
+        {
+            map.SetPixel(x, y, color);
         }
 
         public Color GetPixelColor(int x, int y)

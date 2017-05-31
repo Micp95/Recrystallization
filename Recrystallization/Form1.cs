@@ -90,7 +90,13 @@ namespace Recrystallization
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            var flag =simulation.NextStep();
+            int k = 1;
+            bool flag = false;
+            while(k > 0)
+            {
+                flag =simulation.NextStep();
+                k--;
+            }
             Render();
 
             if (!flag)

@@ -192,7 +192,7 @@ namespace Recrystallization
         private SimulationStatus Recrystallization()
         {
 
-
+						//rozrost ziaren
             for (int x = 1; x < width - 1; x++)
             {
                 for (int y = 1; y < height - 1; y++)
@@ -201,7 +201,7 @@ namespace Recrystallization
                 }
             }
 
-
+						//generowanie nowych ziaren
             var points = nodesController.NextStep();
             if(points.Count != 0)
             {
